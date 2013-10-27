@@ -1,0 +1,107 @@
+menu {
+	margin:0;
+	padding:0;
+}
+body{
+	font: 100% "Trebuchet MS", sans-serif;
+	margin: 50px;
+}
+
+#main_content {
+border:thin black solid;
+background-color:#ECF1F6;
+width: 80%;
+margin-right: 5%;
+border-radius: 1em;
+padding: 1em;
+
+
+vertical-align: center;
+}
+
+nav li {
+	display:inline;
+}
+#header{
+color:white;
+background-color:#4372aa;
+border-bottom: thick solid #FF0000;
+padding-bottom: 0px;
+margin-bottom: 0px;
+
+}
+
+#eyebrow{
+width:40%;
+height: 15px;
+float:right;
+}
+
+#logo>img {
+float: left;
+border: 2px solid #FF0000;
+margin-right: 25px;
+}
+
+#logo>h1 {
+font-size: 300%;
+border: 2px solid yellow;
+margin-top: 10px;
+
+}
+
+#subtitle{
+border: 3px solid green;
+padding-bottom: 0px;
+margin-bottom: 2px;
+}
+
+.subheader {
+clear:left;
+}
+
+#post_list {
+list-style:none;
+list-style-position:inside;
+border: blue solid 4px;
+padding: 0px;
+padding-right: 15px;
+}
+
+li.post{
+/*border: 2px solid #4372aa;*/
+border-bottom: 10px solid #4372aa;
+padding-top: 3px;
+padding-right: 10px;
+padding-left: 10px;
+padding-bottom: 0px;
+border-radius: 4px;
+background-color: white;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 90%;
+margin-right: 5%;
+margin-left: 5%;
+
+}
+
+.timestamp
+{
+	padding: 2px;
+	border-radius: 3px;
+	background-color: orange;
+	font-size: 90%;
+	font-style: italic;
+	width: 60%;
+	margin: 0px;
+	float: right;
+}
+
+p.post_content{
+clear: right;
+font-size: 100%;
+background-color: white;
+border: orange dotted 1px;
+padding-top: 5px;
+padding-bottom:5px;
+} 
