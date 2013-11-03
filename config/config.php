@@ -20,6 +20,12 @@ If you want a different default time format for this app, set it below
 # Ideally, this should match the domain name
 	define('APP_EMAIL', 'webmaster@sample-app.com');
 
+# Default Image / Avatar settings
+	define('AVATAR_PATH', "/uploads/avatars/");
+	if(!defined('SMALL_W')) define('SMALL_W', 200);
+	if(!defined('SMALL_H')) define('SMALL_H', 200);
+	define('PLACE_HOLDER_IMAGE', "/uploads/avatars/default.png");
+
 /*
 A email designated to receive messages from the server. Examples:
  	* When there's a MySQL error on the live server it will send it to this email
@@ -31,7 +37,7 @@ A email designated to receive messages from the server. Examples:
 	define('SYSTEM_EMAIL', 'dreches@fas.harvard.edu');
 
 # Default DB name for this app
-	define('DB_NAME', "p2_debrex_biz");
+	define('DB_NAME', "debrexbi_p2_debrex_biz");
 
 # Timezone
 	define('TIMEZONE', 'America/New_York');

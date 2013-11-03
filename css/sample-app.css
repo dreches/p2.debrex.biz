@@ -4,7 +4,7 @@ menu {
 }
 body{
 	font: 100% "Trebuchet MS", sans-serif;
-	margin: 50px;
+	margin: 15px; 50px;
 }
 
 #main_content {
@@ -14,33 +14,62 @@ width: 80%;
 margin-right: 5%;
 border-radius: 1em;
 padding: 1em;
-
-
 vertical-align: center;
 }
 
 nav li {
 	display:inline;
 }
+
 #header{
 color:white;
 background-color:#4372aa;
-border-bottom: thick solid #FF0000;
+border-bottom: thick solid #FF6600;
 padding-bottom: 0px;
 margin-bottom: 0px;
 
 }
 
+#eyebrow li {
+	padding-left: .5em;
+	margin-right: .5em;
+	/*
+	
+	margin-left: .5em;
+	*/
+	border-left: white 2px solid;	
+	display: inline;
+}
+#eyebrow li:first-of-type {
+border-left: hidden;
+}
+
+
+
+#eyebrow a {
+	color: white;
+}
+
 #eyebrow{
-width:40%;
-height: 15px;
+width:50%;
+/*height: 15px;*/
+height: 1em;
+
 float:right;
+color: white;
+text-align: right;
+margin-right: 1em;
+}
+#logo {
+border: 1px solid #4372aa;
+height: 170px;
 }
 
 #logo>img {
 float: left;
-border: 2px solid #FF0000;
+border: 1px solid gray;
 margin-right: 25px;
+height: 90%;
 }
 
 #logo>h1 {
@@ -58,6 +87,14 @@ margin-bottom: 2px;
 
 .subheader {
 clear:left;
+}
+
+.error_msg {
+	font-weight: bold;
+	color: #CC0000;
+}
+
+#user_id{
 }
 
 #post_list {
@@ -89,12 +126,12 @@ margin-left: 5%;
 {
 	padding: 2px;
 	border-radius: 3px;
-	background-color: orange;
+	color: #FF0000;
 	font-size: 90%;
 	font-style: italic;
 	width: 60%;
 	margin: 0px;
-	float: right;
+	/*float: right; */
 }
 
 p.post_content{
@@ -105,3 +142,22 @@ border: orange dotted 1px;
 padding-top: 5px;
 padding-bottom:5px;
 } 
+
+input[type="file"] {
+	color:red;
+	background-color: white;
+	border: solid gray 1px;
+}
+
+div.follower_list{
+border: 1px solid orange;
+width: 20%;
+
+}
+div.follower_list .button
+{
+	font-size: 80%;
+	width = 12em;
+	height = 1em;
+}
+

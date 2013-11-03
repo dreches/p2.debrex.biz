@@ -19,23 +19,33 @@
 
 <body>	
 	<header id="header" > 
-		<div id="eyebrow">
-			<?php if($user): ?>
-				You are logged in as <?=$user->first_name?> <?=$user->last_name?><br>
-			<?php endif; ?>
-		</div>	
+		<nav id="eyebrow">
+			<menu>
+				<?php if($user): ?>
+					<li>
+						You are logged in as <?=$user->first_name?> <?=$user->last_name?>
+					</li>
+					<li><a href='/users/logout'>Logout</a></li>
+				<?php else: ?>
+					<li><a href='/users/signup'>Sign Up</a></li>
+					<li><a href='/users/login'>Log In</a></li>
+				<?php endif; ?>
+			</menu>
+		</nav>	
 		<div id="logo">
 			<img src="/images/doctalktrns4.jpg" alt="DocTalk:Home"></a>
 			&nbsp;&nbsp;
 			<h1>DocTalk</h1>
-		</div>
+		
 		<h2 id="subtitle">A chat site for the medical community.</h2>
+		</div>
  	</header>
-	<nav class="subheader">
+	<nav id="main_navigation" class="subheader">
 		<menu>
 				<li><a href='/'>Home</a></li>
 				
 			<?php if($user): ?>
+				<li><a href='/users/profile'>Profile</a></li>
 				<li><a href='/posts/add'>Add Post</a></li>
 				<li><a href='/posts/'>View Posts</a></li>
 				<li><a href='/posts/users'>Follow Users</a></li>
