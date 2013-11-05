@@ -5,17 +5,50 @@ menu {
 body{
 	font: 100% "Trebuchet MS", sans-serif;
 	margin: 15px; 50px;
+	/*
+	color:white;
+background-color:#4372aa;
+*/
 }
 
 #main_content {
 border:thin black solid;
 background-color:#ECF1F6;
-width: 80%;
+width: 90%;
 margin-right: 5%;
 border-radius: 1em;
 padding: 1em;
+
 vertical-align: center;
 }
+
+#main_content fieldset {
+margin: 1em;
+border-radius: 1em;
+
+}
+form .error_msg{
+margin-top: .5em;
+
+}
+
+form .button {
+  font-size: 1em;
+}
+
+form input[type="file"] {
+	color:red;
+	background-color: white;
+	border: solid gray 1px;
+}
+
+#main_navigation a
+{
+	color : #4372aa;
+	padding-right: .2em;
+	padding-left : .2em;
+}
+
 
 nav li {
 	display:inline;
@@ -24,7 +57,8 @@ nav li {
 #header{
 color:white;
 background-color:#4372aa;
-border-bottom: thick solid #FF6600;
+border-bottom: thick solid red;
+
 padding-bottom: 0px;
 margin-bottom: 0px;
 
@@ -73,14 +107,14 @@ height: 90%;
 }
 
 #logo>h1 {
-font-size: 300%;
-border: 2px solid yellow;
+font-size: 2.5em;
+border: 2px solid #bff323;
 margin-top: 10px;
 
 }
 
 #subtitle{
-border: 3px solid green;
+border: 2px solid #bff323;
 padding-bottom: 0px;
 margin-bottom: 2px;
 }
@@ -93,8 +127,34 @@ clear:left;
 	font-weight: bold;
 	color: #CC0000;
 }
+#user_header {
+height: 7em;
+padding-left: 1em;
+border-top-left-radius: 1em;
+border-top-right-radius: 1em;
+border-radius: 1em;
+width: 80%;
+border-bottom: thick solid #bff323;
 
-#user_id{
+}
+
+#user_header>#title {
+font-size: 2em;
+border: red solid 1px;
+margin-top: .5em;
+margin-bottom: .5em;
+}
+
+#user_header>#user_email {
+font-size: 1.2em;	
+}
+
+#user_avatar{
+	height: 7em; 
+	width: 7em;
+	float : right;
+	margin-right: .3em;
+	border-top-right-radius: 1em;
 }
 
 #post_list {
@@ -121,6 +181,12 @@ margin-right: 5%;
 margin-left: 5%;
 
 }
+.post .user_id {
+font-weight: bold;
+margin-top: .2em;
+font-style: italic;
+border : 2px solid navy;
+}
 
 .timestamp
 {
@@ -129,8 +195,9 @@ margin-left: 5%;
 	color: #FF0000;
 	font-size: 90%;
 	font-style: italic;
-	width: 60%;
+	/*width: 60%;*/
 	margin: 0px;
+	text-align: right;
 	/*float: right; */
 }
 
@@ -143,21 +210,52 @@ padding-top: 5px;
 padding-bottom:5px;
 } 
 
-input[type="file"] {
-	color:red;
-	background-color: white;
-	border: solid gray 1px;
+.post img {
+	vertical-align: text-top;
 }
 
-div.follower_list{
+
+
+.follower_list{
 border: 1px solid orange;
-width: 20%;
+
 
 }
-div.follower_list .button
+.user_item {
+	display: inline-block;
+	border: thin solid red;
+	border-radius: .3em;
+	margin: 2em;
+}
+
+.follower_list .user_item>img
+{
+	float : left;
+}
+.follower_list .button
+{
+	clear:left;
+	text-align: center;
+}
+
+.follow {
+
+padding-right : .52em;
+padding-left: .52em;
+
+}
+
+a.unfollow {
+padding-right : 0em;
+padding-left :0em;
+
+}
+
+
+.follower_list .button
 {
 	font-size: 80%;
-	width = 12em;
+	/*width = 15em;*/
 	height = 1em;
 }
 

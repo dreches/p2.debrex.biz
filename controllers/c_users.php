@@ -1,7 +1,7 @@
 <?php
 class users_controller extends base_controller {
 	
-	
+		
     public function __construct() {
         parent::__construct();
         #echo "users_controller construct called<br><br>";
@@ -115,9 +115,11 @@ class users_controller extends base_controller {
 				# page, not signup. 
 				else {
 					$error = true;
-					$errstr .= 'Unable to log in user '.$email.'. Please retry. <br>';
+					$errstr .= 'User created<br>';
+					$errstr .= 'Please log in <br>';
 					
 					$this->template->content = View::instance('v_users_login'); 
+					$this->template->content->user['email'] = $email;
 					$this->template->content->error = $errstr;			
 					echo $this->template;   
 					
@@ -151,7 +153,8 @@ class users_controller extends base_controller {
     public function login() {
         //echo "This is the login page";
 		$this->template->content = View::instance('v_users_login');    	
-    	echo $this->template;   
+    	$this->template->content->error = "testing errors";
+		echo $this->template;   
        
     }
 	
@@ -225,6 +228,7 @@ class users_controller extends base_controller {
 			#die('<br/><br/><span class="error">Members only.</span><a class="button" href="/users/login">Login</a>');
 		}
 		# If user is defined, but not user_name, get it from user.
+		# For now, we only show the user their own profile, so this is OK.
 		if ($user_name == NULL) {
 			$user_name = $this->user->first_name.' '.$this->user->last_name;
 		}
@@ -262,30 +266,44 @@ class users_controller extends base_controller {
 	
 	public function p_profile (){
 		$errstr = '<br>';
+		$error = false;
 		foreach($_POST as $field_name => $value) {
 			
 			# Just ignore fields that were blanked out.
-			if($value == "") {
+			if(empty($value)) {
+				unset($_POST[$field_name]);
+			}
+			# if there is no matching field in $this->user, remove so
+			# it won't go into the table
+			# (future option - use such field for something else)
+			else if (!isset($this->user->$field_name)){
+				echo $field_name.' is not defined in user. <br>';
 				unset($_POST[$field_name]);
 			}
 			# or fields that haven't changed
-			else if (@strcmp($value, $this->user->$field_name)==0)
-			{
-				echo $field_name.' matched the value: '.$value.'<br>';
-				unset($_POST[$field_name]);
-			}
+			else if ($val =(strcmp($value, $this->user->$field_name)==0))
+				{
+					echo $field_name.' matched the value: '.$value.'<br>';
+					unset($_POST[$field_name]);
+				}
+			
 			else {
+				echo "[strcmp value =".$val."]";
 				echo $field_name.' did not match '.$value.'<br>';
 			}
 		}
 		# Check if an avatar was actually loaded
 		$key = key($_FILES);
-		$error = $_FILES[$key]['error'];
-		$errstr = '';
-		if ( $error>0) {
-			if ($error != 4) {
-				$errstr .= "Unable to load file. <br>";
-				switch ($error) {
+		$f_error = $_FILES[$key]['error'];
+		$filename = $_FILES[$key]['name'];
+		#$errstr = '';
+		if ( $f_error>0) {
+			echo "error value: $f_error";
+			# if a file was specified, but not loaded, report an error so user can retry 
+			if ($f_error != 4) {
+				$error = true;
+				$errstr .= "Unable to load file $filename. <br>";
+				switch ($f_error) {
 					case 1:
 					case 2: 
 						$errstr .= "File size was too large. <br>";
@@ -294,7 +312,7 @@ class users_controller extends base_controller {
 						$errstr .= "File only partially uploaded<br>";
 						break;
 					default:
-						$errstr .= "Error code: $error.<br>";
+						$errstr .= "Error code: $f_error.<br>";
 				}
 				# Set up the View
 				$this->template->content = View::instance('v_users_profile');
@@ -303,21 +321,56 @@ class users_controller extends base_controller {
 				$this->template->content->user_name = $this->user->first_name.' '.$this->user->last_name;
 				echo $this->template;
 			}
-			
 		}
 		
 		
-		
-		
+		# At this point, either no file was specified, in which case proceed, or a file was uploaded to a temp directory.
+		if (!$error) {
+			if ($filename)
+			{
+				# Give the file a unique name by incorporating the user_id.
+				$new_name = "mypic".$this->user->user_id;
+				$new_name = Upload::upload($_FILES,AVATAR_PATH,array("jpg","JPG","jpeg","JPEG","gif","GIF","png","PNG"),$new_name);
+				if ($new_name === "Invalid file type.") {
+					echo "Invalid file type";
+					$errstr .= "Invalid file type for $filename.<br>";
+					$error = true;
+				}
+				else {
+					# Put the avatar in $_POST 
+					echo ($new_name);
+					$_POST["avatar"]= $new_name;
+				}
+			}
+		}
 		echo "This is your profile.<br>";
 		echo "<pre>";
 		echo print_r($_POST);
 		echo print_r($_FILES);
-		echo "</pre><br>";
+		
 		echo key($_FILES)."<br>";
 		echo print_r(pathinfo($_FILES["avatar"]["name"]));
+		echo getcwd();
+		echo "</pre><br>";
+		
+		if (!($error) and !(empty($_POST))) {
+			$where_condition = "WHERE user_id = '".$this->user->user_id."'";
+			# Update the database
+			DB::instance(DB_NAME)->update('users',$_POST,$where_condition );
+		}
+		if ($error) {
+		# Set up the View
+			$this->template->content = View::instance('v_users_profile');
+			$this->template->title = "DocTalk: Profile";
+			$this->template->content->error = $errstr;
+			$this->template->content->user_name = $this->user->first_name.' '.$this->user->last_name;
+			echo $this->template;
+		}
+		else {
+		
+			Router::redirect('/users/profile');
+		}
 		
 	}
-
 
 } # end of the class

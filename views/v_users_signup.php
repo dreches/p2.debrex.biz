@@ -13,13 +13,9 @@
 		<input type='password' id="password" name='password' required><br><br>
 		<label for="password2">Retype Password</label>
 		<input type='password' id="password2" name='password2' required><br><br>
-		
-		<?php if(isset($error)) echo "<span class='error_msg'>$error</span><br><br>"; ?>
+		<?php if(isset($error)) echo "<span class='error_msg'>$error</span><br>"; ?>
 	
 	</fieldset>
-	
-		
-	
 	<div id="submission">
 		<input type='hidden' name='form_id' value='signup'>	
 		<input class="button" type='submit' value='Sign Up'>
