@@ -31,8 +31,7 @@
 		title="Note: After creating new tags, you will still need to highlight them in order to add them to the post." >Add a new tag </button>
 		
 		<br><br>
-		Select a highlight color: <input type='color' id='highlight' name='highlight'/>
-		<br><br>
+		
 		
 		<input class="button" type='Submit' value='Add new post'/>
 	</form>	

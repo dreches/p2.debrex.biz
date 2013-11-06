@@ -62,7 +62,7 @@
 	<?php if(isset($content)) echo $content; ?>
 	</div>
 	<?php if(isset($client_files_body)) echo $client_files_body; ?>
-	<pre><?php print_r($user);?></pre>
+	<!--<pre><?php print_r($user);?></pre>-->
 		
 						
 	
