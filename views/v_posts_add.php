@@ -12,7 +12,7 @@
 		</div>
 		<p>Post a memo, and if desired, tag it by one or more topics of your choosing.<br>
 		</p>
-		<textarea name='content' autofocus ; ></textarea><br><br>
+		<textarea name='content' autofocus cols='70' rows='7'  ; ></textarea><br><br>
 		
 		<?php if(isset($error)) echo "<span class='error_msg'>$error</span>"; ?>
 		

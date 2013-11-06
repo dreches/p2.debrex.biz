@@ -4,6 +4,7 @@
 	   Or add followers?  <a id="button" href='/posts/users'>Add followers</a><br>
 	</p>
 <? else: ?>
+	<h3> Query by <?=$list_mode?></h3>
     <ul id="post_list">
     <? foreach($posts as $post): ?>
 		<li class = "post">

@@ -32,21 +32,21 @@ class posts_controller extends base_controller {
 		if (!($errstr===NULL)) 
 		{
 			$this->template->content->error = $errstr;
-			echo $this->template;
+			#IF we bring the user back to the page, we still want the tags
+			#echo $this->template;
 		}
-		else
-		{
-			#Get the list of tags already out there
-			$q = 
-			"SELECT * 
-			FROM tags
-			ORDER BY tag_name ASC";
-			
-			# Run query
-			$tags = DB::instance(DB_NAME)->select_rows($q);
-			$this->template->content->tags = $tags;
-			echo $this->template;
-		}
+		
+		#Get the list of tags already out there
+		$q = 
+		"SELECT * 
+		FROM tags
+		ORDER BY tag_name ASC";
+		
+		# Run query
+		$tags = DB::instance(DB_NAME)->select_rows($q);
+		$this->template->content->tags = $tags;
+		echo $this->template;
+	
 	}	
 	
 	
@@ -61,25 +61,49 @@ class posts_controller extends base_controller {
 		echo "</pre>";
 		
 		if(empty($_POST['content'])){
-			#$this->add("Post content was empty. Nothing was posted <br/><br/>");
-			
+			$this->add("Post content was empty. Nothing was posted <br/><br/>");
 		}
 		else
 		{
-			# Loop through the tags to see if any need to be added to the DB
-			#foreach( $_POST['tags'] as $tag {
-				#if (
-			#}
+			
+			
 			$_POST['user_id']  = $this->user->user_id;
 			$_POST['created']  = Time::now();
 			$_POST['modified'] = Time::now();
+			#copy the tag ids for later processing
+			$tag_ids = $_POST['tags'];
 			
 			unset($_POST['highlight']);
 			unset($_POST['tags']);
+		
+			$post_id = DB::instance(DB_NAME)->insert('posts',$_POST);
+			
+			# Loop through the tags to see if any need to be added to the DB
+		    
+			$post_tags = Array();
+			foreach( $tag_ids as $key => $tag_id ){
+				if (strncmp($tag_id,"NEW:",4) == 0)
+				{
+					$new_tag = Array( "tag_name" => substr($tag_id,4) );
+					#INSERT each new tag seperately, so we can get its id back
+					$tag_id = DB::instance(DB_NAME)->insert('tags',$new_tag); 
+				}
+				#Now build the array linking the post to the tags
+				if (is_numeric($tag_id))
+				{
+					$post_tags[] = Array( 'post_id'=>$post_id, 'tag_id'=>$tag_id);
 					
-			DB::instance(DB_NAME)->insert('posts',$_POST);
+				}
+			}
+			# Only update the posts_tags table if values are legit
+			if  (is_numeric($post_id) and !empty($post_tags)) {
+				DB::instance(DB_NAME)->insert_rows('posts_tags',$post_tags);
+			}
+			
+			
 			
 			Router::redirect('/posts/view_list/self');
+			
 		}
 		
 	}
@@ -89,7 +113,7 @@ class posts_controller extends base_controller {
 	View all posts
 	-------------------------------------------------------------------------------------------------*/
 	public function index() {
-
+		
 		# Set up view
 		$this->template->content = View::instance('v_posts_index');
 	
@@ -101,9 +125,10 @@ class posts_controller extends base_controller {
 		
 		
 		# Render view
-		echo $this->template; 
+		#echo $this->template; 
 		
-		#$this->view_list("user");
+		
+		Router::redirect('/posts/view_list/tag=1');
 	}
 	
 	public function view_list($list_mode = "user", &$content=NULL) {
@@ -116,13 +141,19 @@ class posts_controller extends base_controller {
 			 $this->template->content = View::instance('v_posts_view_list');
 			$content =& $this->template->content; 
 		endif;
+		
+		if( strncmp($list_mode,"tag=",4) == 0) {
+			$search_value = substr($list_mode,4);
+			$list_mode = "tag";
+		}
 		if ($list_mode === "user") 
 			# create a query by user
 			$q = $this->query_by_user();
 		else if ($list_mode === "self" )
 			$q = $this->query_by_self();
 		else if ($list_mode === "tag") 
-			$q = $this->query_by_tag();
+			$q = $this->query_by_tag($search_value);
+		else die(print_r($list_mode));
 		
 
 		# Run query	
@@ -148,6 +179,7 @@ class posts_controller extends base_controller {
 		endforeach;
 		
 		# Pass $posts array to the view
+		$content->list_mode = $list_mode;
 		$content->posts = $posts;
 		$content->tags = $tags;
 		$content->avatar_urls = $avatar_urls;
@@ -174,7 +206,8 @@ class posts_controller extends base_controller {
 			    ON posts.user_id = users_users.user_id_followed
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE users_users.user_id = '.$this->user->user_id;
+			WHERE users_users.user_id = '.$this->user->user_id.'
+			ORDER BY posts.post_id DESC';
 		return $q;
 	}
 	
@@ -192,26 +225,29 @@ class posts_controller extends base_controller {
 			FROM posts
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE posts.user_id = '.$this->user->user_id;
+			WHERE posts.user_id = '.$this->user->user_id.'
+			ORDER BY posts.post_id DESC'
+			;
 		return $q;
 	}
-	private function query_by_tag () {
-		# need to add table for tag
+	private function query_by_tag ($search_value) {
+		
 		$q = 'SELECT
 				posts.post_id,
 			    posts.content,
 			    posts.created,
 			    posts.user_id AS post_user_id,
-			    users_users.user_id AS follower_id,
-			    users.first_name,
+			    posts_tags.tag_id,
+				users.first_name,
 			    users.last_name,
 				users.avatar
 			FROM posts
-			INNER JOIN users_users 
-			    ON posts.user_id = users_users.user_id_followed
+			INNER JOIN posts_tags 
+			    ON posts_tags.post_id = posts.post_id
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE users_users.user_id = '.$this->user->user_id;
+			WHERE posts_tags.tag_id = '.$search_value.'
+			ORDER BY posts.post_id DESC';
 		return $q;
 	}
 	
