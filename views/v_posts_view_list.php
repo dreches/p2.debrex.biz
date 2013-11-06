@@ -3,7 +3,8 @@
 	<p>There are no posts to show. Would you like to create one?  <a id="button" href='/posts/add'>Add a post</a><br>
 	   Or add followers?  <a id="button" href='/posts/users'>Add followers</a><br>
 	</p>
-<? else: ?>
+<? else:?>
+
 	<h3> Query by <?=$list_mode?></h3>
     <ul id="post_list">
     <? foreach($posts as $post): ?>
@@ -19,7 +20,7 @@
 				<ul class="tag_list">
 					<span class='tag_list_title'>Tags:</span>
 					<? foreach ($tags[$post['post_id']] as $tag) : ?>
-						<li class="tag"><?=$tag['tag_name']?></li>
+						<li class="tag"><a href='<?="/posts/index/tag=".$tag['tag_id']?>'><?=$tag['tag_name']?></a></li>
 					<?endforeach?>
 				</ul>
 			<?endif?>

@@ -112,7 +112,11 @@ class posts_controller extends base_controller {
 	/*-------------------------------------------------------------------------------------------------
 	View all posts
 	-------------------------------------------------------------------------------------------------*/
-	public function index() {
+	public function index($arg) {
+		/*
+		Originally, my thinking was to include the view in a larger index page, but I didn't end up doing 
+		that, so all my functionality is in view_list.  
+		
 		
 		# Set up view
 		$this->template->content = View::instance('v_posts_index');
@@ -125,10 +129,10 @@ class posts_controller extends base_controller {
 		
 		
 		# Render view
-		#echo $this->template; 
+		echo $this->template; 
+		*/
 		
-		
-		Router::redirect('/posts/view_list/tag=1');
+		Router::redirect('/posts/view_list/'.$arg);
 	}
 	
 	public function view_list($list_mode = "user", &$content=NULL) {
@@ -141,6 +145,7 @@ class posts_controller extends base_controller {
 			 $this->template->content = View::instance('v_posts_view_list');
 			$content =& $this->template->content; 
 		endif;
+		
 		
 		if( strncmp($list_mode,"tag=",4) == 0) {
 			$search_value = substr($list_mode,4);
@@ -168,13 +173,13 @@ class posts_controller extends base_controller {
 		    }
 			$q = "SELECT 
 					posts_tags.tag_id,
-					tags.tag_name
+					tags.tag_name 
 				FROM posts_tags
 				INNER JOIN tags
 				ON posts_tags.tag_id = tags.tag_id
 				WHERE posts_tags.post_id = '".$post['post_id']."'";
 			
-			$tags[$post['post_id']] =  DB::instance(DB_NAME)->select_rows($q);
+			$tags[$post['post_id']] =  DB::instance(DB_NAME)->select_array($q,'tag_id');
 			
 		endforeach;
 		
