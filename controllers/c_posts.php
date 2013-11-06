@@ -23,16 +23,30 @@ class posts_controller extends base_controller {
 	Display a new post form
 	-------------------------------------------------------------------------------------------------*/
 	public function add($errstr = NULL) {
-		
-		
+	
 		$this->template->content = View::instance("v_posts_add");
 		$this->template->title = "DocTalk: Post";
+		$client_files_body = array('/js/createTag.js');
+		# Right now the javascript is embedded in v_posts_add
+		#$this->template->client_files_body = Utils::load_client_files($client_files_body);
 		if (!($errstr===NULL)) 
 		{
 			$this->template->content->error = $errstr;
+			echo $this->template;
 		}
-		echo $this->template;
-		
+		else
+		{
+			#Get the list of tags already out there
+			$q = 
+			"SELECT * 
+			FROM tags
+			ORDER BY tag_name ASC";
+			
+			# Run query
+			$tags = DB::instance(DB_NAME)->select_rows($q);
+			$this->template->content->tags = $tags;
+			echo $this->template;
+		}
 	}	
 	
 	
@@ -40,21 +54,32 @@ class posts_controller extends base_controller {
 	Process new posts
 	-------------------------------------------------------------------------------------------------*/
 	public function p_add() {
-		unset($_POST['highlight']);
-		unset($_POST['tag']);
+		echo "<pre><br>";
+		echo print_r($_POST);
+		echo "<br>TAG DATA<br>";
+		echo print_r($_POST['tags']);
+		echo "</pre>";
+		
 		if(empty($_POST['content'])){
-			$this->add("Post content was empty. Nothing was posted <br/><br/>");
+			#$this->add("Post content was empty. Nothing was posted <br/><br/>");
+			
 		}
 		else
 		{
+			# Loop through the tags to see if any need to be added to the DB
+			#foreach( $_POST['tags'] as $tag {
+				#if (
+			#}
 			$_POST['user_id']  = $this->user->user_id;
 			$_POST['created']  = Time::now();
 			$_POST['modified'] = Time::now();
 			
-						
+			unset($_POST['highlight']);
+			unset($_POST['tags']);
+					
 			DB::instance(DB_NAME)->insert('posts',$_POST);
 			
-			Router::redirect('/posts/view_list');
+			Router::redirect('/posts/view_list/self');
 		}
 		
 	}
@@ -83,9 +108,10 @@ class posts_controller extends base_controller {
 	
 	public function view_list($list_mode = "user", &$content=NULL) {
 		$standalone = true;
+		$avatar_urls = array();
+		$tags = array();
 		# Set up view which can be run as part of another page or by itself
 		if ($content===NULL ) :
-			echo "content is null";
 			$standalone = true;
 			 $this->template->content = View::instance('v_posts_view_list');
 			$content =& $this->template->content; 
@@ -98,12 +124,33 @@ class posts_controller extends base_controller {
 		else if ($list_mode === "tag") 
 			$q = $this->query_by_tag();
 		
-				
+
 		# Run query	
 		$posts = DB::instance(DB_NAME)->select_rows($q);
 		
+		foreach($posts as $post):
+			$puid=$post['post_user_id'];
+			if (!(isset($avatar_urls[$puid]))) {
+				# Creating a temporary array to store the avatars so we don't need to 
+				# repeat this whole process each time
+				$avatar_urls[$puid] = empty($post['avatar'])? PLACE_HOLDER_IMAGE: AVATAR_PATH.$post['avatar']; 
+		    }
+			$q = "SELECT 
+					posts_tags.tag_id,
+					tags.tag_name
+				FROM posts_tags
+				INNER JOIN tags
+				ON posts_tags.tag_id = tags.tag_id
+				WHERE posts_tags.post_id = '".$post['post_id']."'";
+			
+			$tags[$post['post_id']] =  DB::instance(DB_NAME)->select_rows($q);
+			
+		endforeach;
+		
 		# Pass $posts array to the view
 		$content->posts = $posts;
+		$content->tags = $tags;
+		$content->avatar_urls = $avatar_urls;
 		if ($standalone) {
 			# Render view
 			echo $this->template;
@@ -114,6 +161,7 @@ class posts_controller extends base_controller {
 	private function query_by_user()	{
 		# Set up query
 		$q = 'SELECT 
+				posts.post_id,
 			    posts.content,
 			    posts.created,
 			    posts.user_id AS post_user_id,
@@ -133,18 +181,24 @@ class posts_controller extends base_controller {
 	private function query_by_self()	{
 		# Set up query
 		$q = 'SELECT 
+				posts.post_id,
 			    posts.content,
 			    posts.created,
-			    posts.user_id AS post_user_id
+			    posts.user_id AS post_user_id,
+				users.first_name,
+			    users.last_name,
+				users.avatar
 
 			FROM posts
-			
+			INNER JOIN users 
+			    ON posts.user_id = users.user_id
 			WHERE posts.user_id = '.$this->user->user_id;
 		return $q;
 	}
 	private function query_by_tag () {
 		# need to add table for tag
-		$q = 'SELECT 
+		$q = 'SELECT
+				posts.post_id,
 			    posts.content,
 			    posts.created,
 			    posts.user_id AS post_user_id,

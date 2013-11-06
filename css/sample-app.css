@@ -134,8 +134,9 @@ border-top-left-radius: 1em;
 border-top-right-radius: 1em;
 border-radius: 1em;
 width: 80%;
+/*
 border-bottom: thick solid #bff323;
-
+*/
 }
 
 #user_header>#title {
@@ -153,29 +154,36 @@ font-size: 1.2em;
 	height: 7em; 
 	width: 7em;
 	float : right;
+	/*
 	margin-right: .3em;
+	*/
 	border-top-right-radius: 1em;
+	border-bottom-right-radius: 1em;
+}
+
+#tag_selector {
+	min-width: 10em;
 }
 
 #post_list {
 list-style:none;
 list-style-position:inside;
-border: blue solid 4px;
 padding: 0px;
+/* This padding was added to center the posts */
 padding-right: 15px;
 }
 
 li.post{
 /*border: 2px solid #4372aa;*/
-border-bottom: 10px solid #4372aa;
+border: 2px outset #4372aa;
 padding-top: 3px;
 padding-right: 10px;
 padding-left: 10px;
 padding-bottom: 0px;
 border-radius: 4px;
 background-color: white;
-margin-top: 10px;
-margin-bottom: 20px;
+margin-top: 1em;
+margin-bottom: 1em;
 width: 90%;
 margin-right: 5%;
 margin-left: 5%;
@@ -185,7 +193,30 @@ margin-left: 5%;
 font-weight: bold;
 margin-top: .2em;
 font-style: italic;
+/*
 border : 2px solid navy;
+*/
+}
+
+.tag_list {
+list-style:none;
+list-style-position:inside;
+color: #3366cc;
+padding: 0px;
+
+}
+.tag_list_title {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+
+.tag_list .tag{
+display: inline-block;
+margin:0px;
+}
+.tag:not(:last-of-type):after { 
+content:",";
 }
 
 .timestamp
@@ -197,21 +228,24 @@ border : 2px solid navy;
 	font-style: italic;
 	/*width: 60%;*/
 	margin: 0px;
+	margin-left: 1em;
 	text-align: right;
-	/*float: right; */
 }
 
 p.post_content{
 clear: right;
 font-size: 100%;
-background-color: white;
-border: orange dotted 1px;
-padding-top: 5px;
-padding-bottom:5px;
+background-color: #ffffcc;
+border-radius: .5em;
+padding: .4em; 
+width: 90%;
+margin: 0em 3em .6em;
 } 
 
 .post img {
 	vertical-align: text-top;
+	width: 2.5em;
+	height: 2.5em;
 }
 
 

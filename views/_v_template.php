@@ -37,7 +37,7 @@
 			&nbsp;&nbsp;
 			<h1>DocTalk</h1>
 		
-		<h2 id="subtitle">A chat site for the medical community.</h2>
+			<h2 id="subtitle">A chat site for the medical community.</h2>
 		</div>
  	</header>
 	<nav id="main_navigation" class="subheader">

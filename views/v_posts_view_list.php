@@ -6,18 +6,22 @@
 <? else: ?>
     <ul id="post_list">
     <? foreach($posts as $post): ?>
-
-		<?if (!(isset($avatar_url[$puid=$post['post_user_id']])))
-			# Creating a temporary array to store the avatars so we don't need to repeat this whole process each time
-			$avatar_url[$puid] = empty($post['avatar'])? PLACE_HOLDER_IMAGE: AVATAR_PATH.$post['avatar']; ?>
 		<li class = "post">
-			<p class="user_id" >
-				<img src='<?=$avatar_url[$puid]?>' alt='' height='50px' width='50px'></img>
+			<div class="user_id" >
+				<img src='<?=$avatar_urls[$post['post_user_id']]?>' alt='' height='50px' width='50px'></img>
 				<?=$post['first_name']?> <?=$post['last_name']?>
-			</p>
+				<span class="timestamp"> posted on <?=Time::display($post['created'])?></span>
+			</div>
 			<p class="post_content"><?=$post['content']?></p>
-			<h5 class="timestamp"> posted on <?=Time::display($post['created'])?></h5>
-
+			<?if (!empty($tags[$post['post_id']])) :?>
+				
+				<ul class="tag_list">
+					<span class='tag_list_title'>Tags:</span>
+					<? foreach ($tags[$post['post_id']] as $tag) : ?>
+						<li class="tag"><?=$tag['tag_name']?></li>
+					<?endforeach?>
+				</ul>
+			<?endif?>
 		</li>	
 	<? endforeach; ?>
 	</ul>
