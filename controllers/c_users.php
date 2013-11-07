@@ -334,13 +334,13 @@ class users_controller extends base_controller {
 				$new_name = "mypic".$this->user->user_id;
 				$new_name = Upload::upload($_FILES,AVATAR_PATH,array("jpg","JPG","jpeg","JPEG","gif","GIF","png","PNG"),$new_name);
 				if ($new_name === "Invalid file type.") {
-					echo "Invalid file type";
+					#echo "Invalid file type";
 					$errstr .= "Invalid file type for $filename.<br>";
 					$error = true;
 				}
 				else {
 					# Put the avatar in $_POST 
-					echo ($new_name);
+					#echo ($new_name);
 					$_POST["avatar"]= $new_name;
 				}
 			}
