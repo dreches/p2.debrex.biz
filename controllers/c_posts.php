@@ -113,7 +113,7 @@ class posts_controller extends base_controller {
 	/*-------------------------------------------------------------------------------------------------
 	View all posts
 	-------------------------------------------------------------------------------------------------*/
-	public function index($arg) {
+	public function index($arg = "user") {
 		/*
 		Originally, my thinking was to include the view in a larger index page, but I didn't end up doing 
 		that, so all my functionality is in view_list.  
