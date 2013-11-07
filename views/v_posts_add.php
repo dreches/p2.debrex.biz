@@ -40,7 +40,7 @@
 		
 			var tagname=prompt("Please enter a new tag name","tag");
 			
-			if (tagname!=null)
+			if (tagname!=null && (tagname.trim().length > 0))
 			  {
 				var myoption=document.createElement("option");
 				myoption.innerHTML=tagname;
