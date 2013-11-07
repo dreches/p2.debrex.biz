@@ -184,6 +184,11 @@ class posts_controller extends base_controller {
 			
 		endforeach;
 		
+		if (!empty($search_value)) {
+			$search_tag=$tags[key($tags)][$search_value]['tag_name'];
+			$list_mode .= "=$search_tag";
+		}
+		
 		# Pass $posts array to the view
 		$content->list_mode = $list_mode;
 		$content->posts = $posts;
