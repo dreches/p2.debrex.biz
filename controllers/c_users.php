@@ -77,11 +77,13 @@ class users_controller extends base_controller {
 			$_POST['modified'] = Time::now();
 			$_POST['password'] = User::hash_password($_POST['password']);
 			$_POST['token']    = User::generate_token($_POST['email']);
-	    
+	        
+			/*
 			echo "<pre>";
 			print_r($_POST);
 			echo DB_NAME;
 			echo "<pre>";
+			*/
 			
 			$user_id = DB::instance(DB_NAME)->insert_row('users', $_POST);
 			
@@ -343,6 +345,7 @@ class users_controller extends base_controller {
 				}
 			}
 		}
+		/**
 		echo "This is your profile.<br>";
 		echo "<pre>";
 		echo print_r($_POST);
@@ -352,7 +355,7 @@ class users_controller extends base_controller {
 		echo print_r(pathinfo($_FILES["avatar"]["name"]));
 		echo getcwd();
 		echo "</pre><br>";
-		
+		**/
 		if (!($error) and !(empty($_POST))) {
 			$where_condition = "WHERE user_id = '".$this->user->user_id."'";
 			# Update the database

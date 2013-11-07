@@ -54,12 +54,13 @@ class posts_controller extends base_controller {
 	Process new posts
 	-------------------------------------------------------------------------------------------------*/
 	public function p_add() {
+		/**
 		echo "<pre><br>";
 		echo print_r($_POST);
 		echo "<br>TAG DATA<br>";
 		echo print_r($_POST['tags']);
 		echo "</pre>";
-		
+		**/
 		if(empty($_POST['content'])){
 			$this->add("Post content was empty. Nothing was posted <br/><br/>");
 		}
