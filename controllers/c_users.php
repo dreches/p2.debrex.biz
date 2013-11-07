@@ -304,7 +304,7 @@ class users_controller extends base_controller {
 			# if a file was specified, but not loaded, report an error so user can retry 
 			if ($f_error <> 4) {
 				$error = true;
-				$errstr .= "Unable to load file $filename. <br>";
+				$errstr .= "Error attempting to upload $filename: ";
 				switch ($f_error) {
 					case 1:
 					case 2: 
@@ -323,6 +323,11 @@ class users_controller extends base_controller {
 				$this->template->content->user_name = $this->user->first_name.' '.$this->user->last_name;
 				echo $this->template;
 			}
+			else
+			{
+				$errstr .= "No file was specified for upload. Press Skip button to leave the page.<br>";
+			}
+			
 		}
 		
 		
@@ -343,6 +348,10 @@ class users_controller extends base_controller {
 					#echo ($new_name);
 					$_POST["avatar"]= $new_name;
 				}
+			}
+			else
+			{
+				$errstr .= "No file uploaded.";
 			}
 		}
 		/**
@@ -371,7 +380,7 @@ class users_controller extends base_controller {
 		}
 		else {
 		
-			Router::redirect('/users/profile');
+			Router::redirect('/posts/add');
 		}
 		
 	}
