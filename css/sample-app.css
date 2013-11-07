@@ -143,6 +143,29 @@ border-bottom: thick solid #bff323;
 */
 }
 
+#plus_one{
+	margin-top: 2em;
+	margin-bottom: 2em;
+	font-size: 95%;
+}
+.bold{
+	font-weight: bold;
+}
+
+
+#plus_one>h3{
+	color: #4372aa;
+	padding:0px;
+	width: 5em;
+	border-bottom: 4px solid red;
+	text-align: center;
+	
+}
+#plus_one  .inner_list{
+	font-size: 90%;
+	
+}
+
 #user_header>#title {
 font-size: 2em;
 /*
@@ -257,7 +280,7 @@ margin: 0em 3em .6em;
 
 
 .follower_list{
-border: 1px solid orange;
+/*border: 1px solid orange;*/
 
 
 }
