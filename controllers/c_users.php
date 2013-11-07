@@ -285,13 +285,13 @@ class users_controller extends base_controller {
 			# or fields that haven't changed
 			else if ($val =(strcmp($value, $this->user->$field_name)==0))
 				{
-					echo $field_name.' matched the value: '.$value.'<br>';
+					#echo $field_name.' matched the value: '.$value.'<br>';
 					unset($_POST[$field_name]);
 				}
 			
 			else {
-				echo "[strcmp value =".$val."]";
-				echo $field_name.' did not match '.$value.'<br>';
+				#echo "[strcmp value =".$val."]";
+				#echo $field_name.' did not match '.$value.'<br>';
 			}
 		}
 		# Check if an avatar was actually loaded
