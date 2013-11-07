@@ -279,7 +279,7 @@ class users_controller extends base_controller {
 			# it won't go into the table
 			# (future option - use such field for something else)
 			else if (!isset($this->user->$field_name)){
-				echo $field_name.' is not defined in user. <br>';
+				#echo $field_name.' is not defined in user. <br>';
 				unset($_POST[$field_name]);
 			}
 			# or fields that haven't changed
@@ -300,9 +300,9 @@ class users_controller extends base_controller {
 		$filename = $_FILES[$key]['name'];
 		#$errstr = '';
 		if ( $f_error>0) {
-			echo "error value: $f_error";
+			#echo "error value: $f_error";
 			# if a file was specified, but not loaded, report an error so user can retry 
-			if ($f_error != 4) {
+			if ($f_error <> 4) {
 				$error = true;
 				$errstr .= "Unable to load file $filename. <br>";
 				switch ($f_error) {
@@ -328,7 +328,7 @@ class users_controller extends base_controller {
 		
 		# At this point, either no file was specified, in which case proceed, or a file was uploaded to a temp directory.
 		if (!$error) {
-			if ($filename)
+			if (!empty($filename))
 			{
 				# Give the file a unique name by incorporating the user_id.
 				$new_name = "mypic".$this->user->user_id;
@@ -356,7 +356,7 @@ class users_controller extends base_controller {
 		echo getcwd();
 		echo "</pre><br>";
 		**/
-		if (!($error) and !(empty($_POST))) {
+		if (!$error and !(empty($_POST))) {
 			$where_condition = "WHERE user_id = '".$this->user->user_id."'";
 			# Update the database
 			DB::instance(DB_NAME)->update('users',$_POST,$where_condition );
