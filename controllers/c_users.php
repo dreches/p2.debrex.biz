@@ -203,7 +203,7 @@ class users_controller extends base_controller {
        $data = Array(
        	'token' => $new_token
        );
-       DB::instance(DB_NAME)->update('users',$data, "WHERE user_id ='". $this->user->user_id)."'";
+       DB::instance(DB_NAME)->update('users',$data, "WHERE user_id ='". $this->user->user_id."'");
        
        # Delete their old token cookie by expiring it
        setcookie('token', '', strtotime('-1 year'), '/');
