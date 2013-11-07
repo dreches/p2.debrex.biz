@@ -197,7 +197,7 @@ class posts_controller extends base_controller {
 	
 	private function query_by_user()	{
 		# Set up query
-		$q = 'SELECT 
+		$q = "SELECT 
 				posts.post_id,
 			    posts.content,
 			    posts.created,
@@ -211,14 +211,14 @@ class posts_controller extends base_controller {
 			    ON posts.user_id = users_users.user_id_followed
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE users_users.user_id = '.$this->user->user_id.'
-			ORDER BY posts.post_id DESC';
+			WHERE users_users.user_id = '".$this->user->user_id."'"
+			ORDER BY posts.post_id DESC";
 		return $q;
 	}
 	
 	private function query_by_self()	{
 		# Set up query
-		$q = 'SELECT 
+		$q = "SELECT 
 				posts.post_id,
 			    posts.content,
 			    posts.created,
@@ -230,14 +230,14 @@ class posts_controller extends base_controller {
 			FROM posts
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE posts.user_id = '.$this->user->user_id.'
-			ORDER BY posts.post_id DESC'
+			WHERE posts.user_id = '".$this->user->user_id."'"
+			ORDER BY posts.post_id DESC"
 			;
 		return $q;
 	}
 	private function query_by_tag ($search_value) {
 		
-		$q = 'SELECT
+		$q = "SELECT
 				posts.post_id,
 			    posts.content,
 			    posts.created,
@@ -251,8 +251,8 @@ class posts_controller extends base_controller {
 			    ON posts_tags.post_id = posts.post_id
 			INNER JOIN users 
 			    ON posts.user_id = users.user_id
-			WHERE posts_tags.tag_id = '.$search_value.'
-			ORDER BY posts.post_id DESC';
+			WHERE posts_tags.tag_id = '".$search_value."'
+			ORDER BY posts.post_id DESC";
 		return $q;
 	}
 	
@@ -278,9 +278,9 @@ class posts_controller extends base_controller {
 		$users = DB::instance(DB_NAME)->select_rows($q);
 		
 		# Set up query to get all connections from users_users table
-		$q = 'SELECT *
+		$q = "SELECT *
 			FROM users_users
-			WHERE user_id = '.$this->user->user_id;
+			WHERE user_id = '".$this->user->user_id."'";
 			
 		# Run query
 		$connections = DB::instance(DB_NAME)->select_array($q,'user_id_followed');
@@ -322,7 +322,8 @@ class posts_controller extends base_controller {
 	public function unfollow($user_id_followed) {
 	
 	    # Set up the where condition
-	    $where_condition = 'WHERE user_id = '.$this->user->user_id.' AND user_id_followed = '.$user_id_followed;
+	    $where_condition = "WHERE user_id = '".$this->user->user_id.
+		"' AND user_id_followed = '".$user_id_followed."'";
 	    
 	    # Run the delete
 	    DB::instance(DB_NAME)->delete('users_users', $where_condition);

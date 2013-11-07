@@ -101,7 +101,7 @@ class users_controller extends base_controller {
 				'SELECT token 
 				FROM users
 				WHERE email = "'.$email.'"
-				AND password = "'.$_POST[password].'"';
+				AND password = "'.$_POST['password'].'"';
 				
 				//echo $q;
 		   
@@ -153,7 +153,7 @@ class users_controller extends base_controller {
     public function login() {
         //echo "This is the login page";
 		$this->template->content = View::instance('v_users_login');    	
-    	$this->template->content->error = "testing errors";
+    	$this->template->content->error = "<br/>";
 		echo $this->template;   
        
     }
@@ -168,10 +168,10 @@ class users_controller extends base_controller {
 	    echo "</pre>";
 		*/
 		$q = 
-			'SELECT token 
+			"SELECT token 
 			FROM users
-			WHERE email = "'.$email.'"
-			AND password = "'.$password.'"';
+			WHERE email = '".$email."'
+			AND password = '".$password."'";
 			
 			//echo $q;
 	   
@@ -201,7 +201,7 @@ class users_controller extends base_controller {
        $data = Array(
        	'token' => $new_token
        );
-       DB::instance(DB_NAME)->update('users',$data, 'WHERE user_id ='. $this->user->user_id);
+       DB::instance(DB_NAME)->update('users',$data, "WHERE user_id ='". $this->user->user_id)."'";
        
        # Delete their old token cookie by expiring it
        setcookie('token', '', strtotime('-1 year'), '/');
