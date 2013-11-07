@@ -72,7 +72,12 @@ class posts_controller extends base_controller {
 			$_POST['created']  = Time::now();
 			$_POST['modified'] = Time::now();
 			#copy the tag ids for later processing
-			$tag_ids = $_POST['tags'];
+			#Initialize to prevent from crashing
+			$tag_ids = Array();
+			if(isset($_POST['tags']))
+				$tag_ids = $_POST['tags'];
+
+	
 			
 			unset($_POST['highlight']);
 			unset($_POST['tags']);
