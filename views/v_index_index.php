@@ -8,7 +8,7 @@
 	Already a member? 	<a class="button" href='/users/login'>Log In</a>
 	<br/><br/>
 	Not a member?  <a class="button" href='/users/signup'>Sign Up</a>
-	<br><br><br><br>
+	<br><br>
 	
 	<div id='plus_one'>
 		<h3>Plus Ones</h3>
